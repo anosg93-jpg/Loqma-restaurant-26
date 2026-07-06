@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مطعم لُقمه | المنيو الرسمي</title>
     
-    <!-- منع تخزين المتصفح للكود القديم لضمان التحديث الفوري -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     
     <link rel="manifest" href="manifest.json?v=1.0.1">
     
-    <!-- دعم التثبيت الكامل للآيفون iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="مطعم لُقمه">
@@ -24,11 +22,11 @@
             --bg: #e0e0e5; 
             --main-text: #1c1c1e;
             --desc-text: #636366;
-            --accent: #d35400; /* درجة الأحمر الموحدة للوجو */
-            --address-tag: #d35400;
+            --accent: #be1e2d; 
+            --address-tag: #be1e2d;
             --white: #f2f2f7; 
             --glass: rgba(242, 242, 247, 0.8);
-            --success: #d35400;
+            --success: #be1e2d;
             --header-bg: #f2f2f7;
         }
 
@@ -62,7 +60,7 @@
         .loading-container { width: 180px; margin: 30px auto 0 auto; text-align: center; }
         .loading-bar { width: 100%; height: 6px; background: #eee; border-radius: 10px; overflow: hidden; position: relative; }
         .loading-bar span { display: block; width: 0; height: 100%; background: var(--accent); animation: progress 2.5s linear forwards; }
-        .loader-percentage { font-size: 0.95rem; font-weight: 800; color: var(--accent); margin-top: 10px; display: inline-block; background: rgba(211, 84, 0, 0.1); padding: 2px 12px; border-radius: 20px; letter-spacing: 0.5px; }
+        .loader-percentage { font-size: 0.95rem; font-weight: 800; color: var(--accent); margin-top: 10px; display: inline-block; background: rgba(190, 30, 45, 0.1); padding: 2px 12px; border-radius: 20px; letter-spacing: 0.5px; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
         @keyframes progress { from { width: 0; } to { width: 100%; } }
         .splash-hidden { transform: translateY(-100%); pointer-events: none; }
@@ -135,7 +133,7 @@
         .cat-item { display: flex; flex-direction: column; align-items: center; min-width: 95px; }
         .cat-img-box { width: 70px; height: 70px; border-radius: 20px; background: #e5e5ea; overflow: hidden; border: 2.5px solid transparent; transition: 0.3s; }
         .cat-img-box img { width: 100%; height: 100%; object-fit: cover; }
-        .cat-item.active .cat-img-box { border-color: var(--accent); transform: scale(1.08); box-shadow: 0 8px 20px rgba(211, 84, 0, 0.2); }
+        .cat-item.active .cat-img-box { border-color: var(--accent); transform: scale(1.08); box-shadow: 0 8px 20px rgba(190, 30, 45, 0.2); }
         .cat-item span { font-size: 0.85rem; font-weight: 700; color: var(--desc-text); margin-top: 6px; }
 
         .menu-list { padding: 15px; max-width: 650px; margin: auto; }
@@ -154,7 +152,7 @@
             font-size: 0.78rem;
             font-weight: 800;
             color: var(--accent);
-            background: rgba(211, 84, 0, 0.08);
+            background: rgba(190, 30, 45, 0.08);
             padding: 2px 10px;
             border-radius: 8px;
             display: inline-flex;
@@ -182,7 +180,7 @@
             border-color: var(--accent); 
             background: var(--accent); 
             color: white;
-            box-shadow: 0 4px 10px rgba(211, 84, 0, 0.25);
+            box-shadow: 0 4px 10px rgba(190, 30, 45, 0.25);
         }
         
         .action-row { display: flex; width: 100%; justify-content: flex-end; align-items: center; }
@@ -190,13 +188,13 @@
         .add-btn { 
             background: var(--accent); color: white; border: none; padding: 6px 18px; height: 38px; border-radius: 12px; 
             font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 800;
-            box-shadow: 0 4px 10px rgba(211, 84, 0, 0.15); flex-shrink: 0; min-width: 80px;
+            box-shadow: 0 4px 10px rgba(190, 30, 45, 0.15); flex-shrink: 0; min-width: 80px;
             transition: background-color 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
         }
         .add-btn:active { transform: scale(0.95); }
         .add-btn.success-state {
             background-color: var(--success) !important;
-            box-shadow: 0 4px 12px rgba(211, 84, 0, 0.3);
+            box-shadow: 0 4px 12px rgba(190, 30, 45, 0.3);
             pointer-events: none;
         }
 
@@ -223,7 +221,7 @@
         .pwa-install-btn {
             background: var(--accent); color: white; border: none; padding: 10px 18px;
             border-radius: 12px; font-weight: 800; font-size: 0.85rem; cursor: pointer;
-            box-shadow: 0 4px 10px rgba(211, 84, 0, 0.2);
+            box-shadow: 0 4px 10px rgba(190, 30, 45, 0.2);
         }
 
         /* --- Footer --- */
@@ -321,7 +319,7 @@
         <div class="modal-content">
             <h2 style="margin-bottom: 20px;">طلباتك</h2>
             <div id="cartItemsList"></div>
-            <div style="margin: 20px 0; padding: 15px; background: rgba(211, 84, 0, 0.1); border-radius: 18px; display: flex; justify-content: space-between;">
+            <div style="margin: 20px 0; padding: 15px; background: rgba(190, 30, 45, 0.1); border-radius: 18px; display: flex; justify-content: space-between;">
                 <b>المجموع</b>
                 <b id="totalAmount">0 ج.م</b>
             </div>
