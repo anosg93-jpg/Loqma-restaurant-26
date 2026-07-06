@@ -1,20 +1,24 @@
 {
   "name": "مطعم لُقمه",
   "short_name": "لُقمه",
-  "start_url": "./",
+  "description": "تطبيق مطعم لُقمه لخدمة التوصيل",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#d35400",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "images/logoloqma.jpg",
       "sizes": "192x192",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
+      "purpose": "any maskable"
     },
     {
       "src": "images/logoloqma.jpg",
       "sizes": "512x512",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
+      "purpose": "any maskable"
     }
   ]
 }
