@@ -9,13 +9,13 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     
-    <link rel="manifest" href="manifest.json?v=2026">
+    <link rel="manifest" href="./manifest.json">
     
     <meta name="theme-color" content="#d35400">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="مطعم لُقمه">
-    <link class="apple-touch-icon" href="images/logoloqma.jpg">
+    <link rel="apple-touch-icon" href="./images/logoloqma.jpg">
     
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -149,7 +149,6 @@
         .food-desc { font-size: 0.85rem; color: var(--desc-text); line-height: 1.4; margin: 6px 0; }
         .price-row { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; align-items: flex-start; }
         
-        /* تنسيق جملة اختيار الحجم أولاً بشكل سيمبل وكريتيف */
         .size-notice-title {
             font-size: 0.78rem;
             font-weight: 800;
@@ -208,7 +207,7 @@
             transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        /* شريط التثبيت السفلي الثابت للـ PWA */
+        /* شريط التثبيت السفلي الذكي */
         #pwa-install-banner {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: var(--white); box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
@@ -222,7 +221,6 @@
         .pwa-banner-title { font-weight: 800; font-size: 0.9rem; color: var(--main-text); }
         .pwa-banner-desc { font-size: 0.75rem; color: var(--desc-text); }
         
-        /* القسم الخاص بزر التثبيت والعبارة التوضيحية أسفله */
         .pwa-action-container {
             display: flex;
             flex-direction: column;
@@ -277,7 +275,7 @@
 
     <div id="splash-screen">
         <div class="loader-content">
-            <img src="./images/logoloqma.jpg" class="loader-logo-big">
+            <img src="./images/logoloqma.jpg" class="loader-logo-big" onerror="this.src='./images/default.jpg'">
             <h2 class="loader-text">مطعم لُقمه</h2>
             <p class="loader-slogan">كل لُقمه حكايه 🍔🔥</p>
             <div class="loading-container">
@@ -291,7 +289,7 @@
         <div class="header-top">
             <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
             <div class="header-logo-container">
-                <img src="./images/logoloqma.jpg" class="header-logo">
+                <img src="./images/logoloqma.jpg" class="header-logo" onerror="this.src='./images/default.jpg'">
             </div>
             <div class="cart-trigger-container">
                 <div class="cart-trigger" onclick="toggleCart(true)" id="cartBtn">
@@ -311,7 +309,7 @@
 
     <div id="pwa-install-banner">
         <div class="pwa-banner-text">
-            <img src="./images/logoloqma.jpg">
+            <img src="./images/logoloqma.jpg" onerror="this.src='./images/default.jpg'">
             <div>
                 <div class="pwa-banner-title">تطبيق مطعم لُقمه</div>
                 <div class="pwa-banner-desc" id="pwa-desc">تصفح المنيو واطلب بسرعة وأمان</div>
@@ -599,10 +597,12 @@
             window.open(`https://wa.me/201011264840?text=${encodeURIComponent(msg)}`);
         }
 
-        /* برمجة نظام الـ PWA الذكي والتحديث التلقائي الفوري والتثبيت للأندرويد والآيفون */
+        /* تفعيل وإعداد نظام الـ PWA بشكل قياسي متكامل */
         function setupPWA() {
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw-pwa.js?v=2026').then(reg => {
+                window.navigator.serviceWorker.register('./sw-pwa.js', { scope: './' })
+                .then(reg => {
+                    console.log('Service Worker Registered Successfully with scope: ' + reg.scope);
                     reg.onupdatefound = () => {
                         const installingWorker = reg.installing;
                         if (installingWorker) {
@@ -613,7 +613,7 @@
                             };
                         }
                     };
-                }).catch(err => console.log('SW registration failed:', err));
+                }).catch(err => console.error('Service Worker registration failed: ', err));
             }
 
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;

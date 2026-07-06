@@ -1,26 +1,26 @@
 const CACHE_NAME = 'loqma-cache-v2026';
 const ASSETS_TO_CACHE = [
-  'index.html',
-  'manifest.json'
+  './index.html',
+  './manifest.json'
 ];
 
-// خطوة التثبيت للملفات الأساسية
+// خطوة التثبيت - الكاش الأولي للملفات الثابتة
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS_TO_CACHE);
-    }).then(() => self.skipWaiting()) // تفعيل فوري للإصدار الجديد
+    }).then(() => self.skipWaiting())
   );
 });
 
-// خطوة تنظيف الكاش القديم وتحديث البيانات فوراً للعميل
+// خطوة التنشيط وتنظيف الكاشات القديمة
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cache) => {
           if (cache !== CACHE_NAME) {
-            console.log('إزالة الكاش القديم لـ مطعم لقمه');
+            console.log('حذف ملفات الكاش القديمة لمطعم لقمه');
             return caches.delete(cache);
           }
         })
@@ -29,9 +29,9 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// استراتيجية النتوورك أولاً ثم الكاش لتحديث لحظي لأسعار منيو جوجل شيت
+// استراتيجية جلب البيانات (الإنترنت أولاً مع حفظ الكاش ليعمل أوفلاين)
 self.addEventListener('fetch', (event) => {
-  // عدم عمل كاش لطلبات جوجل شيتس أو الواتساب حتى لا تتوقف المبيعات أو تتأخر الأسعار
+  // استثناء روابط جوجل شيت والواتساب تماماً من الكاش عشان التحديث اللحظي وسير العمل
   if (event.request.url.includes('docs.google.com') || event.request.url.includes('wa.me')) {
     return event.respondWith(fetch(event.request));
   }
@@ -39,7 +39,6 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        // إذا نجح الاتصال، نحدث الكاش بالنسخة الجديدة
         if (response.status === 200 && event.request.method === 'GET') {
           const responseClone = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -49,7 +48,6 @@ self.addEventListener('fetch', (event) => {
         return response;
       })
       .catch(() => {
-        // إذا كان العميل أوفلاين، نسحب فوراً من الكاش ليعمل التطبيق بدون إنترنت
         return caches.match(event.request);
       })
   );
