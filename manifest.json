@@ -1,12 +1,10 @@
 {
   "name": "مطعم لُقمه",
-  "short_name": "مطعم لُقمه",
-  "description": "المنيو الرسمي لمطعم لُقمه",
-  "start_url": "index.html",
+  "short_name": "لُقمه",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#f2f2f7",
+  "background_color": "#ffffff",
   "theme_color": "#d35400",
-  "scope": "./",
   "icons": [
     {
       "src": "images/logoloqma.jpg",
