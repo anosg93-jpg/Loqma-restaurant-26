@@ -1,4 +1,4 @@
-const CACHE_NAME = 'loqma-cache-v2027';
+const CACHE_NAME = 'loqma-cache-v2028';
 const ASSETS_TO_CACHE = [
   './index.html',
   './manifest.json'

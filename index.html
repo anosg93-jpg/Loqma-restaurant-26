@@ -2,20 +2,21 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مطعم لُقمه | المنيو الرسمي</title>
     
+    <!-- منع تخزين المتصفح للكود القديم لضمان التحديث الفوري -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     
-    <link rel="manifest" href="./manifest.json">
+    <link rel="manifest" href="manifest.json?v=1.0.1">
     
-    <meta name="theme-color" content="#e74c3c">
+    <!-- دعم التثبيت الكامل للآيفون iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="مطعم لُقمه">
-    <link rel="apple-touch-icon" href="./images/logoloqma.jpg">
+    <link class="apple-touch-icon" href="images/logoloqma.jpg">
     
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -23,11 +24,11 @@
             --bg: #e0e0e5; 
             --main-text: #1c1c1e;
             --desc-text: #636366;
-            --accent: #e74c3c; /* تعديل اللون من البرتقالي إلى الأحمر المتناسق */
-            --address-tag: #0a84ff;
+            --accent: #d35400; /* درجة الأحمر الموحدة للوجو */
+            --address-tag: #d35400;
             --white: #f2f2f7; 
             --glass: rgba(242, 242, 247, 0.8);
-            --success: #34c759;
+            --success: #d35400;
             --header-bg: #f2f2f7;
         }
 
@@ -61,7 +62,7 @@
         .loading-container { width: 180px; margin: 30px auto 0 auto; text-align: center; }
         .loading-bar { width: 100%; height: 6px; background: #eee; border-radius: 10px; overflow: hidden; position: relative; }
         .loading-bar span { display: block; width: 0; height: 100%; background: var(--accent); animation: progress 2.5s linear forwards; }
-        .loader-percentage { font-size: 0.95rem; font-weight: 800; color: var(--accent); margin-top: 10px; display: inline-block; background: rgba(231, 76, 60, 0.1); padding: 2px 12px; border-radius: 20px; letter-spacing: 0.5px; }
+        .loader-percentage { font-size: 0.95rem; font-weight: 800; color: var(--accent); margin-top: 10px; display: inline-block; background: rgba(211, 84, 0, 0.1); padding: 2px 12px; border-radius: 20px; letter-spacing: 0.5px; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
         @keyframes progress { from { width: 0; } to { width: 100%; } }
         .splash-hidden { transform: translateY(-100%); pointer-events: none; }
@@ -107,7 +108,7 @@
         }
         
         .badge {
-            position: absolute; top: -5px; right: -5px; background: #ff3b30;
+            position: absolute; top: -5px; right: -5px; background: var(--accent);
             color: white; font-size: 10px; font-weight: 800; width: 20px; height: 20px;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
             border: 2px solid white; transform: scale(0); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -134,7 +135,7 @@
         .cat-item { display: flex; flex-direction: column; align-items: center; min-width: 95px; }
         .cat-img-box { width: 70px; height: 70px; border-radius: 20px; background: #e5e5ea; overflow: hidden; border: 2.5px solid transparent; transition: 0.3s; }
         .cat-img-box img { width: 100%; height: 100%; object-fit: cover; }
-        .cat-item.active .cat-img-box { border-color: var(--accent); transform: scale(1.08); box-shadow: 0 8px 20px rgba(231, 76, 60, 0.2); }
+        .cat-item.active .cat-img-box { border-color: var(--accent); transform: scale(1.08); box-shadow: 0 8px 20px rgba(211, 84, 0, 0.2); }
         .cat-item span { font-size: 0.85rem; font-weight: 700; color: var(--desc-text); margin-top: 6px; }
 
         .menu-list { padding: 15px; max-width: 650px; margin: auto; }
@@ -146,17 +147,14 @@
         .item-img-box img { width: 100%; height: 100%; object-fit: cover; }
         .food-info { flex: 1; position: relative; }
         .food-name { font-weight: 800; font-size: 1.15rem; color: var(--main-text); }
-        
-        /* ضبط تصميم وحجم الوصف ليظهر بخط صغير ومتناسق دون أن يخرب تصميم الكارت */
-        .food-desc { font-size: 0.82rem; color: var(--desc-text); line-height: 1.4; margin: 4px 0 6px 0; font-weight: 600; }
-        
+        .food-desc { font-size: 0.85rem; color: var(--desc-text); line-height: 1.4; margin: 6px 0; }
         .price-row { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; align-items: flex-start; }
         
         .size-notice-title {
             font-size: 0.78rem;
             font-weight: 800;
             color: var(--accent);
-            background: rgba(231, 76, 60, 0.08);
+            background: rgba(211, 84, 0, 0.08);
             padding: 2px 10px;
             border-radius: 8px;
             display: inline-flex;
@@ -184,7 +182,7 @@
             border-color: var(--accent); 
             background: var(--accent); 
             color: white;
-            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.25);
+            box-shadow: 0 4px 10px rgba(211, 84, 0, 0.25);
         }
         
         .action-row { display: flex; width: 100%; justify-content: flex-end; align-items: center; }
@@ -192,13 +190,13 @@
         .add-btn { 
             background: var(--accent); color: white; border: none; padding: 6px 18px; height: 38px; border-radius: 12px; 
             font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 800;
-            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.15); flex-shrink: 0; min-width: 80px;
+            box-shadow: 0 4px 10px rgba(211, 84, 0, 0.15); flex-shrink: 0; min-width: 80px;
             transition: background-color 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
         }
         .add-btn:active { transform: scale(0.95); }
         .add-btn.success-state {
             background-color: var(--success) !important;
-            box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
+            box-shadow: 0 4px 12px rgba(211, 84, 0, 0.3);
             pointer-events: none;
         }
 
@@ -210,7 +208,6 @@
             transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        /* شريط التثبيت السفلي الذكي */
         #pwa-install-banner {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: var(--white); box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
@@ -223,23 +220,10 @@
         .pwa-banner-text img { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; }
         .pwa-banner-title { font-weight: 800; font-size: 0.9rem; color: var(--main-text); }
         .pwa-banner-desc { font-size: 0.75rem; color: var(--desc-text); }
-        
-        .pwa-action-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
         .pwa-install-btn {
             background: var(--accent); color: white; border: none; padding: 10px 18px;
             border-radius: 12px; font-weight: 800; font-size: 0.85rem; cursor: pointer;
-            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2); width: 100%; text-align: center;
-        }
-        .pwa-static-note {
-            font-size: 0.68rem;
-            font-weight: 700;
-            color: var(--desc-text);
-            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(211, 84, 0, 0.2);
         }
 
         /* --- Footer --- */
@@ -271,14 +255,14 @@
         .remove-btn { color: #ff3b30; font-weight: 800; font-size: 0.75rem; cursor: pointer; }
 
         .user-fields input { background: var(--bg); border: none; padding: 16px; border-radius: 14px; width: 100%; margin-bottom: 10px; color: var(--main-text); text-align: right; }
-        .submit-btn { background: #34c759; color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; }
+        .submit-btn { background: var(--accent); color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div id="splash-screen">
         <div class="loader-content">
-            <img src="./images/logoloqma.jpg" class="loader-logo-big" onerror="this.src='./images/default.jpg'">
+            <img src="./images/logoloqma.jpg" class="loader-logo-big">
             <h2 class="loader-text">مطعم لُقمه</h2>
             <p class="loader-slogan">كل لُقمه حكايه 🍔🔥</p>
             <div class="loading-container">
@@ -292,7 +276,7 @@
         <div class="header-top">
             <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
             <div class="header-logo-container">
-                <img src="./images/logoloqma.jpg" class="header-logo" onerror="this.src='./images/default.jpg'">
+                <img src="./images/logoloqma.jpg" class="header-logo">
             </div>
             <div class="cart-trigger-container">
                 <div class="cart-trigger" onclick="toggleCart(true)" id="cartBtn">
@@ -312,16 +296,13 @@
 
     <div id="pwa-install-banner">
         <div class="pwa-banner-text">
-            <img src="./images/logoloqma.jpg" onerror="this.src='./images/default.jpg'">
+            <img src="./images/logoloqma.jpg">
             <div>
                 <div class="pwa-banner-title">تطبيق مطعم لُقمه</div>
                 <div class="pwa-banner-desc" id="pwa-desc">تصفح المنيو واطلب بسرعة وأمان</div>
             </div>
         </div>
-        <div class="pwa-action-container">
-            <button class="pwa-install-btn" id="pwa-action-btn" onclick="triggerPwaInstall()">تثبيت الآن</button>
-            <span class="pwa-static-note">تثبيت برنامج مطعم لُقمه</span>
-        </div>
+        <button class="pwa-install-btn" id="pwa-action-btn" onclick="triggerPwaInstall()">تثبيت الآن</button>
     </div>
 
     <footer class="restaurant-footer">
@@ -340,7 +321,7 @@
         <div class="modal-content">
             <h2 style="margin-bottom: 20px;">طلباتك</h2>
             <div id="cartItemsList"></div>
-            <div style="margin: 20px 0; padding: 15px; background: rgba(231, 76, 60, 0.1); border-radius: 18px; display: flex; justify-content: space-between;">
+            <div style="margin: 20px 0; padding: 15px; background: rgba(211, 84, 0, 0.1); border-radius: 18px; display: flex; justify-content: space-between;">
                 <b>المجموع</b>
                 <b id="totalAmount">0 ج.م</b>
             </div>
@@ -451,9 +432,6 @@
             const currentCatIndex = uniqueCategoriesList.indexOf(cat);
             const showSizeNotice = (currentCatIndex === 0 || currentCatIndex === 1);
 
-            // فحص ذكي ما إذا كان القسم الحالي هو قسم الشاورما لتغيير المسميات لأحجام لارج وأكس لارج بناء على طلبك
-            const isShawarma = (cat && cat.includes("شاورما"));
-
             document.getElementById('menuList').innerHTML = menuData.filter(i => i.category === cat).map((item, index) => {
                 
                 let priceHTML = '';
@@ -461,29 +439,22 @@
                 let hasDouble = item.doublePrice && item.doublePrice !== "" && item.doublePrice !== "0";
                 let hasMultipleSizes = (hasSingle || hasDouble);
                 
-                // تحديد المسميات بناء على القسم (لارج وأكس لارج للشاورما - سينجل ودبل للباقي)
-                let singleLabel = isShawarma ? "لارج" : "سينجل";
-                let doubleLabel = isShawarma ? "أكس لارج" : "دابل";
-
                 if (!hasSingle && !hasDouble) {
                     priceHTML = `<span class="price-option selected" data-price="${item.normalPrice}" data-type="عادي">${item.normalPrice} ج.م</span>`;
                 } else {
                     if(item.normalPrice && item.normalPrice !== "") priceHTML += `<span class="price-option selected" data-price="${item.normalPrice}" data-type="عادي">عادي: ${item.normalPrice} ج.م</span>`;
-                    if(hasSingle) priceHTML += `<span class="price-option" data-price="${item.singlePrice}" data-type="${singleLabel}">${singleLabel}: ${item.singlePrice} ج.م</span>`;
-                    if(hasDouble) priceHTML += `<span class="price-option" data-price="${item.doublePrice}" data-type="${doubleLabel}">${doubleLabel}: ${item.doublePrice} ج.م</span>`;
+                    if(hasSingle) priceHTML += `<span class="price-option" data-price="${item.singlePrice}" data-type="سينجل">سينجل: ${item.singlePrice} ج.م</span>`;
+                    if(hasDouble) priceHTML += `<span class="price-option" data-price="${item.doublePrice}" data-type="دابل">دابل: ${item.doublePrice} ج.م</span>`;
                 }
 
                 let sizeNoticeHTML = (showSizeNotice && hasMultipleSizes) ? `<div class="size-notice-title">✨ اختار الحجم أولاً:</div>` : '';
-                
-                // طباعة الوصف في حال وجوده في الجوجل شيت فقط بخط صغير متناسق لا يخرب الكارت
-                let descHTML = (item.desc && item.desc.trim() !== "") ? `<p class="food-desc">${item.desc}</p>` : '';
 
                 return `
                 <div class="food-card" id="item-${index}">
                     <div class="item-img-box"><img src="${item.img}" onerror="this.src='${IMAGES_PATH}default.jpg'"></div>
                     <div class="food-info">
                         <span class="food-name">${item.name}</span>
-                        ${descHTML}
+                        <p class="food-desc">${item.desc}</p>
                         <div class="price-row">
                             ${sizeNoticeHTML}
                             <div class="food-price" onclick="selectPrice(event, ${index})">
@@ -506,7 +477,7 @@
                 e.target.classList.add('selected');
             }
         }
-        
+
         function addToCartFromCard(e, btn, index, name, img) {
             const card = document.getElementById(`item-${index}`);
             const selectedOpt = card.querySelector('.price-option.selected');
@@ -610,12 +581,9 @@
             window.open(`https://wa.me/201011264840?text=${encodeURIComponent(msg)}`);
         }
 
-        /* تفعيل وإعداد نظام الـ PWA بشكل قياسي متكامل */
         function setupPWA() {
             if ('serviceWorker' in navigator) {
-                window.navigator.serviceWorker.register('./sw-pwa.js', { scope: './' })
-                .then(reg => {
-                    console.log('Service Worker Registered Successfully with scope: ' + reg.scope);
+                navigator.serviceWorker.register('sw-pwa.js?v=1.0.1').then(reg => {
                     reg.onupdatefound = () => {
                         const installingWorker = reg.installing;
                         if (installingWorker) {
@@ -626,7 +594,7 @@
                             };
                         }
                     };
-                }).catch(err => console.error('Service Worker registration failed: ', err));
+                }).catch(err => console.log('SW registration failed:', err));
             }
 
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
