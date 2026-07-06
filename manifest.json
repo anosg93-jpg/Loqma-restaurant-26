@@ -1,24 +1,22 @@
 {
   "name": "مطعم لُقمه",
   "short_name": "مطعم لُقمه",
-  "description": "المنيو الرسمي الإلكتروني لمطعم لُقمه",
-  "start_url": "index.html?v=1.0.1",
+  "description": "المنيو الرسمي لمطعم لُقمه",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#f2f2f7",
   "theme_color": "#d35400",
-  "orientation": "portrait-primary",
+  "scope": "./",
   "icons": [
     {
       "src": "images/logoloqma.jpg",
       "sizes": "192x192",
-      "type": "image/jpeg",
-      "purpose": "any"
+      "type": "image/jpeg"
     },
     {
       "src": "images/logoloqma.jpg",
       "sizes": "512x512",
-      "type": "image/jpeg",
-      "purpose": "any"
+      "type": "image/jpeg"
     }
   ]
 }
