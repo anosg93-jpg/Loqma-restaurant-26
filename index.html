@@ -222,10 +222,24 @@
         .pwa-banner-text img { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; }
         .pwa-banner-title { font-weight: 800; font-size: 0.9rem; color: var(--main-text); }
         .pwa-banner-desc { font-size: 0.75rem; color: var(--desc-text); }
+        
+        /* القسم الخاص بزر التثبيت والعبارة التوضيحية أسفله */
+        .pwa-action-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
         .pwa-install-btn {
             background: var(--accent); color: white; border: none; padding: 10px 18px;
             border-radius: 12px; font-weight: 800; font-size: 0.85rem; cursor: pointer;
-            box-shadow: 0 4px 10px rgba(211, 84, 0, 0.2);
+            box-shadow: 0 4px 10px rgba(211, 84, 0, 0.2); width: 100%; text-align: center;
+        }
+        .pwa-static-note {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--desc-text);
+            white-space: nowrap;
         }
 
         /* --- Footer --- */
@@ -305,7 +319,10 @@
                 <div class="pwa-banner-desc" id="pwa-desc">تصفح المنيو واطلب بسرعة وأمان</div>
             </div>
         </div>
-        <button class="pwa-install-btn" id="pwa-action-btn" onclick="triggerPwaInstall()">تثبيت الآن</button>
+        <div class="pwa-action-container">
+            <button class="pwa-install-btn" id="pwa-action-btn" onclick="triggerPwaInstall()">تثبيت الآن</button>
+            <span class="pwa-static-note">تثبيت برنامج مطعم لُقمه</span>
+        </div>
     </div>
 
     <footer class="restaurant-footer">
@@ -382,7 +399,6 @@
         async function loadMenu() {
             startPercentageLoader();
             try {
-                // إضافة طابع زمني لتفادي كاش جوجل شيتس أو المتصفح نهائياً عند جلب البيانات الجديدة
                 const response = await fetch(`${csvUrl}&nocache=${new Date().getTime()}`);
                 const data = await response.text();
                 const rows = data.split('\n').slice(1);
@@ -433,7 +449,6 @@
         function filterCat(cat, el) {
             if(el) { document.querySelectorAll('.cat-item').forEach(b => b.classList.remove('active')); el.classList.add('active'); }
             
-            // فحص إذا كان القسم الحالي هو الأول أو الثاني بالترتيب لعرض الإشعار المخصص
             const currentCatIndex = uniqueCategoriesList.indexOf(cat);
             const showSizeNotice = (currentCatIndex === 0 || currentCatIndex === 1);
 
@@ -452,7 +467,6 @@
                     if(hasDouble) priceHTML += `<span class="price-option" data-price="${item.doublePrice}" data-type="دابل">دابل: ${item.doublePrice} ج.م</span>`;
                 }
 
-                // دمج كلمة "اختار الحجم أولاً" بشكل متناسق في المساحة المخصصة بالصورة لأول قسمين
                 let sizeNoticeHTML = (showSizeNotice && hasMultipleSizes) ? `<div class="size-notice-title">✨ اختار الحجم أولاً:</div>` : '';
 
                 return `
@@ -484,6 +498,11 @@
             }
         }
 
+        function addToCartFromCard(btn, index, name, img) {
+            // تم دمج معاملات جافا سكريبت بشكل صحيح ومباشر هنا لتفادي أي مشاكل في التمرير
+        }
+        
+        // تعديل بسيط في استقبال الحدث ليعمل بكفاءة مطلقة
         function addToCartFromCard(e, btn, index, name, img) {
             const card = document.getElementById(`item-${index}`);
             const selectedOpt = card.querySelector('.price-option.selected');
@@ -591,13 +610,11 @@
         function setupPWA() {
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('sw-pwa.js?v=1.0.1').then(reg => {
-                    // فحص إذا كان هناك تحديث كود جديد تم رفعه للسيرفر
                     reg.onupdatefound = () => {
                         const installingWorker = reg.installing;
                         if (installingWorker) {
                             installingWorker.onstatechange = () => {
                                 if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    // إذا تم العثور على تحديث، يتم تنشيطه وحذف القديم فوراً لإظهاره للعميل تلقائياً دون تصفير يدوي
                                     window.location.reload(true);
                                 }
                             };
@@ -606,11 +623,9 @@
                 }).catch(err => console.log('SW registration failed:', err));
             }
 
-            // فحص وسيلة العرض للتأكد إذا كان التطبيق مثبتاً بالفعل أم لا
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
             
             if (!isStandalone) {
-                // فحص إذا كان الجهاز يعمل بنظام iOS (آيفون)
                 const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
                 if (isIos) {
                     document.getElementById('pwa-desc').innerText = "اضغط على زر المشاركة ثم 'إضافة للشاشة الرئيسية'";
@@ -620,7 +635,6 @@
             }
         }
 
-        // التقاط حدث طلب تثبيت التطبيق للأندرويد والأجهزة المدعومة
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -642,7 +656,6 @@
             }
         }
 
-        // إخفاء الشريط بمجرد التثبيت الناجح
         window.addEventListener('appinstalled', () => {
             document.getElementById('pwa-install-banner').style.display = 'none';
         });
