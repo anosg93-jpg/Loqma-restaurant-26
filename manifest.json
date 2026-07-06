@@ -1,10 +1,9 @@
 {
   "name": "مطعم لُقمه",
   "short_name": "لُقمه",
-  "description": "تصفح المنيو واطلب بسرعة وأمان",
-  "start_url": "./index.html",
+  "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#e0e0e5",
+  "background_color": "#ffffff",
   "theme_color": "#d35400",
   "icons": [
     {

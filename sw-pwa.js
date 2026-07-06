@@ -1,34 +1,56 @@
-const CACHE_NAME = 'loqma-v1.0.1'; // غير هذا الرقم عند عمل تحديث جذري للكود
-const ASSETS = [
-  './index.html',
-  './manifest.json',
-  'https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap'
+const CACHE_NAME = 'loqma-cache-v2026';
+const ASSETS_TO_CACHE = [
+  'index.html',
+  'manifest.json'
 ];
 
-// تثبيت التطبيق وتخزين الملفات
+// خطوة التثبيت للملفات الأساسية
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS_TO_CACHE);
+    }).then(() => self.skipWaiting()) // تفعيل فوري للإصدار الجديد
   );
-  self.skipWaiting();
 });
 
-// تفعيل التحديث التلقائي وحذف الكاش القديم
+// خطوة تنظيف الكاش القديم وتحديث البيانات فوراً للعميل
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => {
+    caches.keys().then((cacheNames) => {
       return Promise.all(
-        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
+        cacheNames.map((cache) => {
+          if (cache !== CACHE_NAME) {
+            console.log('إزالة الكاش القديم لـ مطعم لقمه');
+            return caches.delete(cache);
+          }
+        })
       );
-    })
+    }).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-// استراتيجية السرعة: الشبكة أولاً مع العودة للكاش إذا كان الإنترنت ضعيفاً
+// استراتيجية النتوورك أولاً ثم الكاش لتحديث لحظي لأسعار منيو جوجل شيت
 self.addEventListener('fetch', (event) => {
+  // عدم عمل كاش لطلبات جوجل شيتس أو الواتساب حتى لا تتوقف المبيعات أو تتأخر الأسعار
+  if (event.request.url.includes('docs.google.com') || event.request.url.includes('wa.me')) {
+    return event.respondWith(fetch(event.request));
+  }
+
   event.respondWith(
     fetch(event.request)
-      .catch(() => caches.match(event.request))
+      .then((response) => {
+        // إذا نجح الاتصال، نحدث الكاش بالنسخة الجديدة
+        if (response.status === 200 && event.request.method === 'GET') {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseClone);
+          });
+        }
+        return response;
+      })
+      .catch(() => {
+        // إذا كان العميل أوفلاين، نسحب فوراً من الكاش ليعمل التطبيق بدون إنترنت
+        return caches.match(event.request);
+      })
   );
 });

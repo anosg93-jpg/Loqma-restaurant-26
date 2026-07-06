@@ -2,19 +2,18 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>مطعم لُقمه | المنيو الرسمي</title>
     
-    <!-- منع تخزين المتصفح للكود القديم لضمان التحديث الفوري -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     
-    <link rel="manifest" href="manifest.json?v=1.0.1">
+    <link rel="manifest" href="manifest.json?v=2026">
     
-    <!-- دعم التثبيت الكامل للآيفون iOS -->
+    <meta name="theme-color" content="#d35400">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="مطعم لُقمه">
     <link class="apple-touch-icon" href="images/logoloqma.jpg">
     
@@ -310,7 +309,6 @@
     <div class="category-nav" id="catNav"></div>
     <div id="menuList" class="menu-list"></div>
 
-    <!-- شريط تثبيت الأبلكيشن الذكي -->
     <div id="pwa-install-banner">
         <div class="pwa-banner-text">
             <img src="./images/logoloqma.jpg">
@@ -497,12 +495,7 @@
                 e.target.classList.add('selected');
             }
         }
-
-        function addToCartFromCard(btn, index, name, img) {
-            // تم دمج معاملات جافا سكريبت بشكل صحيح ومباشر هنا لتفادي أي مشاكل في التمرير
-        }
         
-        // تعديل بسيط في استقبال الحدث ليعمل بكفاءة مطلقة
         function addToCartFromCard(e, btn, index, name, img) {
             const card = document.getElementById(`item-${index}`);
             const selectedOpt = card.querySelector('.price-option.selected');
@@ -609,7 +602,7 @@
         /* برمجة نظام الـ PWA الذكي والتحديث التلقائي الفوري والتثبيت للأندرويد والآيفون */
         function setupPWA() {
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw-pwa.js?v=1.0.1').then(reg => {
+                navigator.serviceWorker.register('sw-pwa.js?v=2026').then(reg => {
                     reg.onupdatefound = () => {
                         const installingWorker = reg.installing;
                         if (installingWorker) {
