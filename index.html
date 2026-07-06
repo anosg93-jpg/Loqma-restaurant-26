@@ -150,6 +150,7 @@
         .food-desc { font-size: 0.85rem; color: var(--desc-text); line-height: 1.4; margin: 6px 0; }
         .price-row { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; align-items: flex-start; }
         
+        /* تنسيق جملة اختيار الحجم أولاً بشكل سيمبل وكريتيف */
         .size-notice-title {
             font-size: 0.78rem;
             font-weight: 800;
@@ -381,6 +382,7 @@
         async function loadMenu() {
             startPercentageLoader();
             try {
+                // إضافة طابع زمني لتفادي كاش جوجل شيتس أو المتصفح نهائياً عند جلب البيانات الجديدة
                 const response = await fetch(`${csvUrl}&nocache=${new Date().getTime()}`);
                 const data = await response.text();
                 const rows = data.split('\n').slice(1);
@@ -431,6 +433,7 @@
         function filterCat(cat, el) {
             if(el) { document.querySelectorAll('.cat-item').forEach(b => b.classList.remove('active')); el.classList.add('active'); }
             
+            // فحص إذا كان القسم الحالي هو الأول أو الثاني بالترتيب لعرض الإشعار المخصص
             const currentCatIndex = uniqueCategoriesList.indexOf(cat);
             const showSizeNotice = (currentCatIndex === 0 || currentCatIndex === 1);
 
@@ -449,6 +452,7 @@
                     if(hasDouble) priceHTML += `<span class="price-option" data-price="${item.doublePrice}" data-type="دابل">دابل: ${item.doublePrice} ج.م</span>`;
                 }
 
+                // دمج كلمة "اختار الحجم أولاً" بشكل متناسق في المساحة المخصصة بالصورة لأول قسمين
                 let sizeNoticeHTML = (showSizeNotice && hasMultipleSizes) ? `<div class="size-notice-title">✨ اختار الحجم أولاً:</div>` : '';
 
                 return `
@@ -583,15 +587,17 @@
             window.open(`https://wa.me/201011264840?text=${encodeURIComponent(msg)}`);
         }
 
-        /* برمجة نظام الـ PWA الذكي والتحديث التلقائي الفوري */
+        /* برمجة نظام الـ PWA الذكي والتحديث التلقائي الفوري والتثبيت للأندرويد والآيفون */
         function setupPWA() {
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('sw-pwa.js?v=1.0.1').then(reg => {
+                    // فحص إذا كان هناك تحديث كود جديد تم رفعه للسيرفر
                     reg.onupdatefound = () => {
                         const installingWorker = reg.installing;
                         if (installingWorker) {
                             installingWorker.onstatechange = () => {
                                 if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // إذا تم العثور على تحديث، يتم تنشيطه وحذف القديم فوراً لإظهاره للعميل تلقائياً دون تصفير يدوي
                                     window.location.reload(true);
                                 }
                             };
@@ -600,8 +606,11 @@
                 }).catch(err => console.log('SW registration failed:', err));
             }
 
+            // فحص وسيلة العرض للتأكد إذا كان التطبيق مثبتاً بالفعل أم لا
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+            
             if (!isStandalone) {
+                // فحص إذا كان الجهاز يعمل بنظام iOS (آيفون)
                 const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
                 if (isIos) {
                     document.getElementById('pwa-desc').innerText = "اضغط على زر المشاركة ثم 'إضافة للشاشة الرئيسية'";
@@ -611,6 +620,7 @@
             }
         }
 
+        // التقاط حدث طلب تثبيت التطبيق للأندرويد والأجهزة المدعومة
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -632,6 +642,7 @@
             }
         }
 
+        // إخفاء الشريط بمجرد التثبيت الناجح
         window.addEventListener('appinstalled', () => {
             document.getElementById('pwa-install-banner').style.display = 'none';
         });
