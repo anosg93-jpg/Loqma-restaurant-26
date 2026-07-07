@@ -1,7 +1,7 @@
 {
   "name": "مطعم لُقمه",
   "short_name": "لُقمه",
-  "start_url": "./index.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#e0e0e5",
   "theme_color": "#be1e2d",

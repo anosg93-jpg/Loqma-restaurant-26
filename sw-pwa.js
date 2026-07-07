@@ -1,33 +1,53 @@
-const CACHE_NAME = 'loqma-app-v1.0.1'; // عند أي تعديل مستقبلي، غير الرقم هنا لـ v1.0.2 مثلاً
+const CACHE_NAME = 'loqma-cache-v3';
 
+// التثبيت الفوري وتخطي الانتظار
 self.addEventListener('install', (event) => {
     self.skipWaiting();
 });
 
+// تفعيل السيرفس وركر ومسح الكاش القديم فوراً
 self.addEventListener('activate', (event) => {
     event.waitUntil(
-        caches.keys().then((cacheNames) => {
+        caches.keys().then((keys) => {
             return Promise.all(
-                cacheNames.map((cache) => {
-                    if (cache !== CACHE_NAME) {
-                        return caches.delete(cache);
+                keys.map((key) => {
+                    if (key !== CACHE_NAME) {
+                        return caches.delete(key);
                     }
                 })
             );
-        }).then(() => clients.claim())
+        }).then(() => self.clients.claim())
     );
 });
 
+// استراتيجية (Network-First) جلب التعديلات الجديدة أولاً من السيرفر لضمان ظهور تحديث الاندكس
 self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        fetch(event.request)
-            .then((response) => {
-                const responseClone = response.clone();
-                caches.open(CACHE_NAME).then((cache) => {
-                    cache.put(event.request, responseClone);
+    // تفعيل الاستراتيجية للملفات النصية وصفحة الاندكس لتحديثها فورا
+    if (event.request.mode === 'navigate' || event.request.destination === 'document') {
+        event.respondWith(
+            fetch(event.request)
+                .then((response) => {
+                    return caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, response.clone());
+                        return response;
+                    });
+                })
+                .catch(() => caches.match(event.request))
+        );
+    } else {
+        // باقي الملفات (الصور والتنسيقات)
+        event.respondWith(
+            caches.match(event.request).then((cachedResponse) => {
+                if (cachedResponse) {
+                    return cachedResponse;
+                }
+                return fetch(event.request).then((response) => {
+                    return caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, response.clone());
+                        return response;
+                    });
                 });
-                return response;
             })
-            .catch(() => caches.match(event.request))
-    );
+        );
+    }
 });

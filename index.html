@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مطعم لُقمه | المنيو الرسمي</title>
     
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
-    <link rel="manifest" href="manifest.json?v=1.0.1">
+    <!-- ربط ملف الـ manifest بمسار مباشر وصحيح للـ PWA الفعلي -->
+    <link rel="manifest" href="manifest.json">
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -581,13 +578,21 @@
 
         function setupPWA() {
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw-pwa.js?v=1.0.1').then(reg => {
+                // إضافة طابع زمني ديناميكي لضمان جلب أحدث ملف سيرفس وركر عند تحميل الاندكس
+                navigator.serviceWorker.register('sw-pwa.js?t=' + new Date().getTime()).then(reg => {
+                    // مراقبة التحديثات بشكل دوري وفوري فور العثور على تحديث جديد
                     reg.onupdatefound = () => {
                         const installingWorker = reg.installing;
                         if (installingWorker) {
                             installingWorker.onstatechange = () => {
                                 if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    window.location.reload(true);
+                                    // إذا تم تحديث الكود خلف الكواليس، قم بتنظيف الكاش وإعادة التشغيل فورا
+                                    if(window.caches) {
+                                        caches.keys().then(names => {
+                                            for (let name of names) caches.delete(name);
+                                        });
+                                    }
+                                    setTimeout(() => { window.location.reload(); }, 500);
                                 }
                             };
                         }
