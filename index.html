@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="مطعم لُقمه">
-    <link class="apple-touch-icon" href="images/logoloqma.jpg">
+    <link class="apple-touch-icon" href="images/logoloqma.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -256,7 +256,7 @@
 
     <div id="splash-screen">
         <div class="loader-content">
-            <img src="./images/logoloqma.jpg" class="loader-logo-big">
+            <img src="./images/logoloqma.jpg" class="loader-logo-big" onerror="this.src='./images/logoloqma.png'">
             <h2 class="loader-text">مطعم لُقمه</h2>
             <p class="loader-slogan">كل لُقمه حكايه 🍔🔥</p>
             <div class="loading-container">
@@ -270,7 +270,7 @@
         <div class="header-top">
             <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
             <div class="header-logo-container">
-                <img src="./images/logoloqma.jpg" class="header-logo">
+                <img src="./images/logoloqma.jpg" class="header-logo" onerror="this.src='./images/logoloqma.png'">
             </div>
             <div class="cart-trigger-container">
                 <div class="cart-trigger" onclick="toggleCart(true)" id="cartBtn">
@@ -290,7 +290,7 @@
 
     <div id="pwa-install-banner">
         <div class="pwa-banner-text">
-            <img src="./images/logoloqma.jpg">
+            <img src="./images/logoloqma.png" onerror="this.src='./images/logoloqma.jpg'">
             <div>
                 <div class="pwa-banner-title">تطبيق مطعم لُقمه</div>
                 <div class="pwa-banner-desc" id="pwa-desc">تصفح المنيو واطلب بسرعة وأمان</div>
@@ -577,10 +577,9 @@
 
         function setupPWA() {
             if ('serviceWorker' in navigator) {
-                // تسجيل مباشر وبسيط لمنع التكرار نهائياً والـ Looping والتهنيج
                 navigator.serviceWorker.register('sw-pwa.js').then(reg => {
-                    console.log('Service Worker Registered Successfully.');
-                }).catch(err => console.log('SW registration failed:', err));
+                    console.log('SW operational.');
+                }).catch(err => console.log('SW error:', err));
             }
 
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
@@ -596,7 +595,6 @@
         }
 
         window.addEventListener('beforeinstallprompt', (e) => {
-            // منع المتصفح من إخفاء البانر الأصلي وحفظ الحدث لإطلاقه فوراً
             e.preventDefault();
             deferredPrompt = e;
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
@@ -615,14 +613,12 @@
                     deferredPrompt = null;
                 });
             } else {
-                // حل بديل فوري للمتصفحات العادية التي ترفض التقاط Prompt التثبيت المباشر
-                alert("اضغط على الثلاث نقاط بالأعلى ➔ ثم اختر 'تثبيت التطبيق' أو 'إضافة إلى الشاشة الرئيسية'");
+                alert("يرجى الضغط على الـ 3 نقاط أعلى المتصفح واختيار 'تثبيت التطبيق' (Install App) بشكل مباشر.");
             }
         }
 
         window.addEventListener('appinstalled', () => {
             document.getElementById('pwa-install-banner').style.display = 'none';
-            alert("تم تثبيت تطبيق لُقمه على جهازك بنجاح! 🎉");
         });
 
         loadMenu();
