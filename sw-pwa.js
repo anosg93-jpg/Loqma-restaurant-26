@@ -1,4 +1,4 @@
-const CACHE_NAME = 'loqma-pwa-final-v7';
+const CACHE_NAME = 'loqma-pwa-final-v9';
 const ASSETS = [
   'index.html',
   'manifest.json',
