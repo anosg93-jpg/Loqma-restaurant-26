@@ -426,21 +426,36 @@
             const currentCatIndex = uniqueCategoriesList.indexOf(cat);
             const showSizeNotice = (currentCatIndex === 0 || currentCatIndex === 1);
 
-            document.getElementById('menuList').innerHTML = menuData.filter(i => i.category === cat).map((item, index) => {
+            // تصفية العناصر الخاصة بالقسم المختار
+            const filteredItems = menuData.filter(i => i.category === cat);
+
+            document.getElementById('menuList').innerHTML = filteredItems.map((item, index) => {
                 
                 let priceHTML = '';
                 let hasSingle = item.singlePrice && item.singlePrice !== "" && item.singlePrice !== "0";
                 let hasDouble = item.doublePrice && item.doublePrice !== "" && item.doublePrice !== "0";
-                let hasMultipleSizes = (hasSingle || hasDouble);
                 
-                if (!hasSingle && !hasDouble) {
-                    priceHTML = `<span class="price-option selected" data-price="${item.normalPrice}" data-type="عادي">${item.normalPrice} ج.م</span>`;
+                // شرط فحص إذا كان هذا الصنف هو أحد آخر صنفين في قسم الشاورما
+                let isShawarma = (cat === "شاورما" || cat.includes("شاورما"));
+                let isLastTwoShawarma = isShawarma && (index >= filteredItems.length - 2);
+
+                if (isLastTwoShawarma) {
+                    // تحويل مسميات الأحجام لآخر صنفين في الشاورما إلى (ميديم - لارج - أكس لارج) بدلاً من المسميات القديمة
+                    if(item.normalPrice && item.normalPrice !== "") priceHTML += `<span class="price-option selected" data-price="${item.normalPrice}" data-type="ميديم">ميديم: ${item.normalPrice} ج.م</span>`;
+                    if(hasSingle) priceHTML += `<span class="price-option" data-price="${item.singlePrice}" data-type="لارج">لارج: ${item.singlePrice} ج.م</span>`;
+                    if(hasDouble) priceHTML += `<span class="price-option" data-price="${item.doublePrice}" data-type="أكس لارج">أكس لارج: ${item.doublePrice} ج.م</span>`;
                 } else {
-                    if(item.normalPrice && item.normalPrice !== "") priceHTML += `<span class="price-option selected" data-price="${item.normalPrice}" data-type="عادي">عادي: ${item.normalPrice} ج.م</span>`;
-                    if(hasSingle) priceHTML += `<span class="price-option" data-price="${item.singlePrice}" data-type="سينجل">سينجل: ${item.singlePrice} ج.م</span>`;
-                    if(hasDouble) priceHTML += `<span class="price-option" data-price="${item.doublePrice}" data-type="دابل">دابل: ${item.doublePrice} ج.م</span>`;
+                    // العرض الطبيعي لباقي أصناف المنيو دون أي تغيير
+                    if (!hasSingle && !hasDouble) {
+                        priceHTML = `<span class="price-option selected" data-price="${item.normalPrice}" data-type="عادي">${item.normalPrice} ج.م</span>`;
+                    } else {
+                        if(item.normalPrice && item.normalPrice !== "") priceHTML += `<span class="price-option selected" data-price="${item.normalPrice}" data-type="عادي">عادي: ${item.normalPrice} ج.م</span>`;
+                        if(hasSingle) priceHTML += `<span class="price-option" data-price="${item.singlePrice}" data-type="سينجل">سينجل: ${item.singlePrice} ج.م</span>`;
+                        if(hasDouble) priceHTML += `<span class="price-option" data-price="${item.doublePrice}" data-type="دابل">دابل: ${item.doublePrice} ج.م</span>`;
+                    }
                 }
 
+                let hasMultipleSizes = (hasSingle || hasDouble);
                 let sizeNoticeHTML = (showSizeNotice && hasMultipleSizes) ? `<div class="size-notice-title">✨ اختار الحجم أولاً:</div>` : '';
 
                 return `
