@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مطعم لُقمه | المنيو الرسمي</title>
     
-    <!-- ربط ملف الـ manifest بمسار مباشر وصحيح للـ PWA الفعلي للتحميل الصحيح -->
     <link rel="manifest" href="manifest.json">
     
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -578,19 +577,9 @@
 
         function setupPWA() {
             if ('serviceWorker' in navigator) {
-                // تم تعديل التسجيل لمنع مشكلة التحميل المتكرر تماماً والاعتماد على السيرفس وركر الجديد
+                // تسجيل مباشر وبسيط لمنع التكرار نهائياً والـ Looping والتهنيج
                 navigator.serviceWorker.register('sw-pwa.js').then(reg => {
-                    reg.onupdatefound = () => {
-                        const installingWorker = reg.installing;
-                        if (installingWorker) {
-                            installingWorker.onstatechange = () => {
-                                // التنبيه والتحديث الفوري الهادئ للمستخدم فقط عند الجاهزية التامة
-                                if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    console.log('New update available. Will be applied on next fresh load.');
-                                }
-                            };
-                        }
-                    };
+                    console.log('Service Worker Registered Successfully.');
                 }).catch(err => console.log('SW registration failed:', err));
             }
 
@@ -607,6 +596,7 @@
         }
 
         window.addEventListener('beforeinstallprompt', (e) => {
+            // منع المتصفح من إخفاء البانر الأصلي وحفظ الحدث لإطلاقه فوراً
             e.preventDefault();
             deferredPrompt = e;
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
@@ -624,11 +614,15 @@
                     }
                     deferredPrompt = null;
                 });
+            } else {
+                // حل بديل فوري للمتصفحات العادية التي ترفض التقاط Prompt التثبيت المباشر
+                alert("اضغط على الثلاث نقاط بالأعلى ➔ ثم اختر 'تثبيت التطبيق' أو 'إضافة إلى الشاشة الرئيسية'");
             }
         }
 
         window.addEventListener('appinstalled', () => {
             document.getElementById('pwa-install-banner').style.display = 'none';
+            alert("تم تثبيت تطبيق لُقمه على جهازك بنجاح! 🎉");
         });
 
         loadMenu();
