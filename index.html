@@ -426,7 +426,6 @@
             const currentCatIndex = uniqueCategoriesList.indexOf(cat);
             const showSizeNotice = (currentCatIndex === 0 || currentCatIndex === 1);
 
-            // تصفية العناصر الخاصة بالقسم المختار
             const filteredItems = menuData.filter(i => i.category === cat);
 
             document.getElementById('menuList').innerHTML = filteredItems.map((item, index) => {
@@ -435,17 +434,26 @@
                 let hasSingle = item.singlePrice && item.singlePrice !== "" && item.singlePrice !== "0";
                 let hasDouble = item.doublePrice && item.doublePrice !== "" && item.doublePrice !== "0";
                 
-                // شرط فحص إذا كان هذا الصنف هو أحد آخر صنفين في قسم الشاورما
+                // فحص هل القسم الحالي هو قسم الشاورما
                 let isShawarma = (cat === "شاورما" || cat.includes("شاورما"));
-                let isLastTwoShawarma = isShawarma && (index >= filteredItems.length - 2);
 
-                if (isLastTwoShawarma) {
-                    // تحويل مسميات الأحجام لآخر صنفين في الشاورما إلى (ميديم - لارج - أكس لارج) بدلاً من المسميات القديمة
-                    if(item.normalPrice && item.normalPrice !== "") priceHTML += `<span class="price-option selected" data-price="${item.normalPrice}" data-type="ميديم">ميديم: ${item.normalPrice} ج.م</span>`;
-                    if(hasSingle) priceHTML += `<span class="price-option" data-price="${item.singlePrice}" data-type="لارج">لارج: ${item.singlePrice} ج.م</span>`;
-                    if(hasDouble) priceHTML += `<span class="price-option" data-price="${item.doublePrice}" data-type="أكس لارج">أكس لارج: ${item.doublePrice} ج.م</span>`;
+                if (isShawarma) {
+                    // فحص هل هذا الصنف هو أحد آخر صنفين في قسم الشاورما
+                    let isLastTwoShawarma = (index >= filteredItems.length - 2);
+
+                    if (isLastTwoShawarma) {
+                        // آخر صنفين شاورما: يظهر فيهم (ميديم - لارج - إكس لارج) كاملين
+                        if(item.normalPrice && item.normalPrice !== "") priceHTML += `<span class="price-option selected" data-price="${item.normalPrice}" data-type="ميديم">ميديم: ${item.normalPrice} ج.م</span>`;
+                        if(hasSingle) priceHTML += `<span class="price-option" data-price="${item.singlePrice}" data-type="لارج">لارج: ${item.singlePrice} ج.م</span>`;
+                        if(hasDouble) priceHTML += `<span class="price-option" data-price="${item.doublePrice}" data-type="إكس لارج">إكس لارج: ${item.doublePrice} ج.م</span>`;
+                    } else {
+                        // باقي أصناف الشاورما: يظهر فيها (ميديم - لارج) فقط بناءً على الأسعار المتاحة
+                        if(item.normalPrice && item.normalPrice !== "") priceHTML += `<span class="price-option selected" data-price="${item.normalPrice}" data-type="ميديم">ميديم: ${item.normalPrice} ج.م</span>`;
+                        if(hasSingle) priceHTML += `<span class="price-option" data-price="${item.singlePrice}" data-type="لارج">لارج: ${item.singlePrice} ج.م</span>`;
+                        if(hasDouble) priceHTML += `<span class="price-option" data-price="${item.doublePrice}" data-type="إكس لارج">إكس لارج: ${item.doublePrice} ج.م</span>`;
+                    }
                 } else {
-                    // العرض الطبيعي لباقي أصناف المنيو دون أي تغيير
+                    // باقي الأقسام في المنيو (برجر، كريب... إلخ) تظل كما هي تماماً (سنجل ودبل) دون تغيير
                     if (!hasSingle && !hasDouble) {
                         priceHTML = `<span class="price-option selected" data-price="${item.normalPrice}" data-type="عادي">${item.normalPrice} ج.م</span>`;
                     } else {
